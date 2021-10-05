@@ -18,7 +18,10 @@ import ListItemText from "@mui/material/ListItemText";
 import { ListItemButton } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-import ListAltIcon from '@mui/icons-material/ListAlt';
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
+import BorderColor from "@mui/icons-material/BorderColor";
 
 const drawerWidth = 200;
 
@@ -87,7 +90,7 @@ export default function Dashboard(props) {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar style={{background: '#383838'}} position="fixed" open={open}>
+      <AppBar style={{ background: "#383838" }} position="fixed" open={open}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -141,11 +144,39 @@ export default function Dashboard(props) {
               <ListItemText primary="Finances" />
             </ListItemButton>
           </ListItem>
+          <Divider />
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => navigation("/todo")}>
+              <ListItemIcon>
+                <ListAltIcon />
+              </ListItemIcon>
+              <ListItemText primary="To do" />
+            </ListItemButton>
+          </ListItem>
+          <Divider />
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => navigation("/diary")}>
+              <ListItemIcon>
+                <MenuBookIcon />
+              </ListItemIcon>
+              <ListItemText primary="Diary" />
+            </ListItemButton>
+          </ListItem>
+          <Divider />
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => navigation("/study")}>
+              <ListItemIcon>
+                <BorderColor />
+              </ListItemIcon>
+              <ListItemText primary="Study" />
+            </ListItemButton>
+          </ListItem>
+          <Divider />
         </List>
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        <Box style={{border: 'thin solid black'}}>{props.children}</Box>
+        <Box style={{ border: "thin solid black" }}>{props.children}</Box>
       </Main>
     </Box>
   );
