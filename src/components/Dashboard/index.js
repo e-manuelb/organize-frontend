@@ -7,7 +7,6 @@ import CssBaseline from "@mui/material/CssBaseline";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -16,11 +15,10 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import { ListItemButton } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import ListAltIcon from '@mui/icons-material/ListAlt';
 
 const drawerWidth = 200;
 
@@ -89,7 +87,7 @@ export default function Dashboard(props) {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar style={{background: '#383838'}} position="fixed" open={open}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -147,7 +145,7 @@ export default function Dashboard(props) {
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        <Box>{props.children}</Box>
+        <Box style={{border: 'thin solid black'}}>{props.children}</Box>
       </Main>
     </Box>
   );
