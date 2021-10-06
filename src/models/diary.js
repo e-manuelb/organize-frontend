@@ -1,0 +1,4 @@
+const diary = {
+  text: "",
+  date: "",
+};
