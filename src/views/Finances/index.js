@@ -14,7 +14,7 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  TableHead
+  TableHead,
 } from "@mui/material";
 
 export function FinancesIndex() {
@@ -102,8 +102,10 @@ export function FinancesIndex() {
           </Button>
         </Grid>
         <Grid item sm={12} xs={12}>
-          <InputLabel style={{textAlign: 'center'}}>Monthly expenses</InputLabel>
-          </Grid>
+          <InputLabel style={{ textAlign: "center" }}>
+            Monthly expenses
+          </InputLabel>
+        </Grid>
         <Grid item sm={12}>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
