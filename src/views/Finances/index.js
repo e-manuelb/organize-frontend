@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Container,
@@ -15,26 +15,49 @@ import {
   TableCell,
   TableBody,
   TableHead,
+  TablePagination,
+  TableFooter,
 } from "@mui/material";
+import { TablePaginationActions } from "./tablePagination";
+import financesServices from "../../services/financesService";
 
 export function FinancesIndex() {
-  function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-  }
-
-  const rows = [
-    createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-    createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-    createData("Eclair", 262, 16.0, 24, 6.0),
-    createData("Cupcake", 305, 3.7, 67, 4.3),
-    createData("Gingerbread", 356, 16.0, 49, 3.9),
-  ];
-
   const [category, setCategory] = useState("");
+  const [finances, setFinances] = useState([]);
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - finances.length) : 0;
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   const handleChange = (event) => {
     setCategory(event.target.value);
   };
+
+  function getFinances() {
+    financesServices
+      .searchFinances()
+      .then((response) => {
+        setFinances(response.data.finances);
+      })
+      .catch((error) => {
+        console.log("Something went wrong: " + error);
+      });
+  }
+
+  useEffect(() => {
+    getFinances();
+  }, []);
+
   return (
     <Container>
       <Grid container spacing={3}>
@@ -108,32 +131,76 @@ export function FinancesIndex() {
         </Grid>
         <Grid item sm={12}>
           <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Dessert (100g serving)</TableCell>
-                  <TableCell align="right">Calories</TableCell>
-                  <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                  <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                  <TableCell align="right">Protein&nbsp;(g)</TableCell>
-                </TableRow>
-              </TableHead>
+            <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+            <TableHead>
+            <TableRow>
+              <TableCell>Category</TableCell>
+              <TableCell>Description</TableCell>
+              <TableCell>Price</TableCell>
+              <TableCell>
+                Transaction date
+              </TableCell>
+              <TableCell>Location</TableCell>
+            </TableRow>
+          </TableHead>
               <TableBody>
-                {rows.map((row) => (
-                  <TableRow
-                    key={row.name}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
+                {(rowsPerPage > 0
+                  ? finances.slice(
+                      page * rowsPerPage,
+                      page * rowsPerPage + rowsPerPage
+                    )
+                  : finances
+                ).map((item) => (
+                  <TableRow key={item.id}>
                     <TableCell component="th" scope="row">
-                      {row.name}
+                      {item.category}
                     </TableCell>
-                    <TableCell align="right">{row.calories}</TableCell>
-                    <TableCell align="right">{row.fat}</TableCell>
-                    <TableCell align="right">{row.carbs}</TableCell>
-                    <TableCell align="right">{row.protein}</TableCell>
+                    <TableCell>
+                      {item.description}
+                    </TableCell>
+                    <TableCell>
+                      {item.price}
+                    </TableCell>
+                    <TableCell>
+                      {item.transactionDate}
+                    </TableCell>
+                    <TableCell>
+                      {item.location}
+                    </TableCell>
                   </TableRow>
                 ))}
+
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: 53 * emptyRows }}>
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )}
               </TableBody>
+              <TableFooter>
+                <TableRow>
+                  <TablePagination
+                    rowsPerPageOptions={[
+                      5,
+                      10,
+                      25,
+                      { label: "All", value: -1 },
+                    ]}
+                    colSpan={3}
+                    count={finances.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    SelectProps={{
+                      inputProps: {
+                        "aria-label": "rows per page",
+                      },
+                      native: true,
+                    }}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    ActionsComponent={TablePaginationActions}
+                  />
+                </TableRow>
+              </TableFooter>
             </Table>
           </TableContainer>
         </Grid>
