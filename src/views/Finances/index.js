@@ -136,11 +136,12 @@ export function FinancesIndex() {
             <TableRow>
               <TableCell>Category</TableCell>
               <TableCell>Description</TableCell>
-              <TableCell>Price</TableCell>
+              <TableCell>Price ($)</TableCell>
               <TableCell>
                 Transaction date
               </TableCell>
               <TableCell>Location</TableCell>
+              <TableCell>Create At</TableCell>
             </TableRow>
           </TableHead>
               <TableBody>
@@ -166,6 +167,9 @@ export function FinancesIndex() {
                     </TableCell>
                     <TableCell>
                       {item.location}
+                    </TableCell>
+                    <TableCell>
+                      {item.createAt}
                     </TableCell>
                   </TableRow>
                 ))}
