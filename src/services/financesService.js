@@ -1,8 +1,14 @@
 import axios from "./connection";
 
 const financesServices = {
-  async searchFinances() {
-    return await axios.get("/finances/search");
+  async getAllFinances() {
+    return await axios.get("/finances/get");
+  },
+  async addFinance(data) {
+    return await axios.post("/finances/add", data);
+  },
+  async deleteFinance(id) {
+    return await axios.delete(`/finances/delete/${id}`);
   },
 };
 

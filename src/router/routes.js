@@ -21,7 +21,7 @@ export function Routes() {
           {/* Finances area */}
           <Route exact path="/finances" component={FinancesIndex} />
           {/* ToDo area */}
-          <Route exact path="/todo" component={ToDoIndex} />
+          <Route exact path="/toDo" component={ToDoIndex} />
           {/* Diary area */}
           <Route exact path="/diary" component={DiaryIndex} />
           <Route exact path="/diary/new" component={NewDiaryPage} />

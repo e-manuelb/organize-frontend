@@ -7,6 +7,9 @@ const diaryServices = {
   async searchDiary(data) {
     return await axios.get("/diary/search");
   },
+  async getDiaries() {
+    return await axios.get('/diary/get')
+  }
 };
 
 export default diaryServices;
