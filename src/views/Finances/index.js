@@ -284,7 +284,7 @@ export function FinancesIndex() {
         </Modal.Footer>
       </Modal>
       {/* Update Modal */}
-      <Modal show={showUpdate} onHide={closeUpdateModal}>
+      <Modal centered show={showUpdate} onHide={closeUpdateModal}>
         <Modal.Header closeButton>
           <Modal.Title>Update finance</Modal.Title>
         </Modal.Header>
@@ -389,7 +389,7 @@ export function FinancesIndex() {
         </Modal.Footer>
       </Modal>
       {/* Info modal */}
-      <Modal show={showInfo} onHide={closeInfoModal}>
+      <Modal centered show={showInfo} onHide={closeInfoModal}>
         <Modal.Header closeButton>
           <Modal.Title>Finance information</Modal.Title>
         </Modal.Header>
