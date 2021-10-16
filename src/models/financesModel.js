@@ -1,7 +1,7 @@
 export const financesModel = {
   createFinances() {
     return {
-      category: "",
+      category: "Category",
       description: "",
       location: "",
       price: null,
