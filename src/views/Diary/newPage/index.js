@@ -1,68 +1,65 @@
 import React, { useState, useEffect } from "react";
-import { Container, Button, Grid, TextField } from "@mui/material";
-import axios from "axios";
+import {
+  Container,
+  Row,
+  Col,
+  FloatingLabel,
+  Form,
+  Button,
+} from "react-bootstrap";
+import { useForm } from "react-hook-form";
+import { diaryModel } from "../../../models/diaryModel";
 import diaryServices from "../../../services/diaryService";
 
 export function NewDiaryPage() {
-  const [value, setValue] = useState("Controlled");
-  const [info, setInfo] = useState("");
+  const diaryForm = useForm({
+    defaultValues: diaryModel.createDiary(),
+  });
 
-  function onChange(ev) {
-    const { text, date } = ev.target;
-
-    setInfo({ ...info, [text]: date });
-  }
-
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
-
-  function onSubmit() {
-    diaryServices.searchDiary().then((response) => {
+  function saveDiary() {
+    const createDiary = { ...diaryForm.getValues() };
+    diaryServices.saveDiary(createDiary).then(() => {
       console.log("Did it work!");
-      console.log(response);
     });
   }
 
   return (
     <Container>
-      <Grid container spacing={2} style={{ textAlign: "center" }}>
-        <Grid item sm={12}></Grid>
-        <Grid item sm={4}>
-          <TextField
-            fullWidth
-            variant="standard"
-            id="date"
-            label="Date"
-            type="date"
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-        </Grid>
-        <Grid item sm={8}></Grid>
-        <Grid item sm={12}>
-          <TextField
-            fullWidth
-            id="outlined-multiline-flexible"
-            label="Type here"
-            multiline
-            maxRows={30}
-            value={value}
-            variant="standard"
-            onChange={handleChange}
-          />
-        </Grid>
-        <Grid item sm={12}>
-          <Button
-            onClick={() => onSubmit()}
-            color="success"
-            variant="contained"
-          >
-            SEND
-          </Button>
-        </Grid>
-      </Grid>
+      <Form>
+        <Row className="mb-2">
+          <Col sm={6} md={3}>
+            <FloatingLabel controlId="floatingInputGrid" label="Date">
+              <Form.Control
+                {...diaryForm.register("date")}
+                type="date"
+                placeholder="Set the date"
+              />
+            </FloatingLabel>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Form.Group
+              className="mb-3"
+              controlId="exampleForm.ControlTextarea1"
+            >
+              <Form.Label>Type here</Form.Label>
+              <Form.Control
+                {...diaryForm.register("text")}
+                as="textarea"
+                rows={25}
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Button variant="primary" onClick={saveDiary}>
+              Add to diary
+            </Button>
+          </Col>
+        </Row>
+      </Form>
     </Container>
   );
 }

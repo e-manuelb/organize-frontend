@@ -1,4 +1,0 @@
-const diary = {
-  text: "",
-  date: "",
-};
