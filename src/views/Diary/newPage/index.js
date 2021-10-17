@@ -10,17 +10,33 @@ import {
 import { useForm } from "react-hook-form";
 import { diaryModel } from "../../../models/diaryModel";
 import diaryServices from "../../../services/diaryService";
+import { useHistory } from "react-router";
 
 export function NewDiaryPage() {
+  const history = useHistory();
+
+  const navigation = (url) => {
+    history.push(url);
+  };
+
   const diaryForm = useForm({
     defaultValues: diaryModel.createDiary(),
   });
 
   function saveDiary() {
     const createDiary = { ...diaryForm.getValues() };
-    diaryServices.saveDiary(createDiary).then(() => {
-      console.log("Did it work!");
-    });
+    diaryServices
+      .saveDiary(createDiary)
+      .then(() => {
+        console.log("Did it work!");
+        navigation("/diary");
+      })
+      .catch((error) => {
+        console.log(
+          "Hmmm, something went wrong, check the console for more information: " +
+            error
+        );
+      });
   }
 
   return (

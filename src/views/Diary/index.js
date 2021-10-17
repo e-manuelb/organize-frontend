@@ -8,6 +8,7 @@ import {
   Row,
   Col,
   FloatingLabel,
+  Modal,
 } from "react-bootstrap";
 import { useHistory } from "react-router";
 import diaryServices from "../../services/diaryService";
@@ -16,8 +17,16 @@ import CreateIcon from "@mui/icons-material/Create";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 export function DiaryIndex() {
+  const [ID, setID] = useState();
   const history = useHistory();
   const [diaries, setDiaries] = useState([]);
+  const [showDelete, setShowDelete] = useState(false);
+
+  const closeDeleteModal = () => setShowDelete(false);
+  const showDeleteModal = (id) => {
+    setID(id);
+    setShowDelete(true);
+  };
 
   const navigation = (url) => {
     history.push(url);
@@ -28,6 +37,22 @@ export function DiaryIndex() {
       setDiaries(response.data);
       console.log(diaries);
     });
+  }
+
+  function deleteDiary() {
+    diaryServices
+      .deleteDiary(ID)
+      .then((response) => {
+        console.log("Did it work!");
+        closeDeleteModal();
+        getDiaries();
+      })
+      .catch((error) => {
+        console.log(
+          "Hmmm, something went wrong, check the console for more information: " +
+            error
+        );
+      });
   }
 
   useEffect(() => {
@@ -110,19 +135,19 @@ export function DiaryIndex() {
                 <ButtonGroup aria-label="Basic example">
                   <Button
                     variant="outline-primary"
-                    // onClick={() => showUpdateModal(item._id)}
+                    onClick={() => navigation(`/diary/read/${item._id}`)}
                   >
                     <FindInPageIcon />
                   </Button>
                   <Button
                     variant="outline-danger"
-                    // onClick={() => showDeleteModal(item._id)}
+                    onClick={() => showDeleteModal(item._id)}
                   >
                     <DeleteIcon />
                   </Button>
                   <Button
                     variant="outline-warning"
-                    // onClick={() => showInfoModal(item._id)}
+                    onClick={() => navigation("/diary/edit/")}
                   >
                     <CreateIcon />
                   </Button>
@@ -139,6 +164,21 @@ export function DiaryIndex() {
           </Button>
         </Col>
       </Row>
+      {/* Delete modal */}
+      <Modal centered show={showDelete} onHide={closeDeleteModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete diary page</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>You're deleting your diary page, are you sure?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={closeDeleteModal}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={deleteDiary}>
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 }
