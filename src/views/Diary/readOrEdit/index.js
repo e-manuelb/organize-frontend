@@ -14,10 +14,23 @@ import { useHistory } from "react-router";
 
 export function ReadOrEditIndex(props) {
   const ID = props.match.params.id;
+  const readOrEdit = props.match.params.readOrEdit;
   const [content, setContent] = useState([]);
-  const [readOnly, setReadOnly] = useState(true);
-  const [saveState, setSaveState] = useState(true);
-  const [editState, setEditState] = useState(false);
+  const [readOnly, setReadOnly] = useState();
+  const [saveEnabled, setSaveEnabled] = useState();
+  const [editEnabled, setEditEnabled] = useState();
+
+  function setCase() {
+    if (readOrEdit === "read") {
+      setReadOnly(true);
+      setEditEnabled(false);
+      setSaveEnabled(true);
+    } else {
+      setReadOnly(false);
+      setEditEnabled(true);
+      setSaveEnabled(false);
+    }
+  }
 
   const history = useHistory();
 
@@ -61,6 +74,7 @@ export function ReadOrEditIndex(props) {
   }
 
   useEffect(() => {
+    setCase();
     searchDiary();
   }, []);
 
@@ -109,11 +123,11 @@ export function ReadOrEditIndex(props) {
               </Button>
               <Button
                 variant="primary"
-                disabled={editState}
+                disabled={editEnabled}
                 onClick={function edit() {
-                  setSaveState(false);
+                  setSaveEnabled(false);
                   setReadOnly(false);
-                  setEditState(true);
+                  setEditEnabled(true);
                 }}
               >
                 Edit
@@ -124,7 +138,7 @@ export function ReadOrEditIndex(props) {
                 className="mx-2"
                 variant="success"
                 onClick={updateDiary}
-                disabled={saveState}
+                disabled={saveEnabled}
               >
                 Save
               </Button>

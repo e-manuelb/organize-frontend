@@ -26,8 +26,7 @@ export function Routes() {
           {/* Diary area */}
           <Route exact path="/diary" component={DiaryIndex} />
           <Route exact path="/diary/new" component={NewDiaryPage} />
-          <Route exact path="/diary/read/:id" component={ReadOrEditIndex} />
-          <Route exact path="/diary/edit/:id" component={ReadOrEditIndex} />
+          <Route exact path="/diary/:readOrEdit/:id" component={ReadOrEditIndex} />
           {/* Study area */}
           <Route exact path="/study" component={StudyIndex} />
           {/* Home area */}

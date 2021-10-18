@@ -18,9 +18,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 export function DiaryIndex() {
   const [ID, setID] = useState();
-  const history = useHistory();
   const [diaries, setDiaries] = useState([]);
   const [showDelete, setShowDelete] = useState(false);
+  const history = useHistory();
 
   const closeDeleteModal = () => setShowDelete(false);
   const showDeleteModal = (id) => {
@@ -28,7 +28,11 @@ export function DiaryIndex() {
     setShowDelete(true);
   };
 
-  const navigation = (url) => {
+  function navigateAndSet(readOrEdit, id) {
+    navigation(`/diary/${readOrEdit}/${id}`);
+  }
+
+  const navigation = (url, readOrEdit) => {
     history.push(url);
   };
 
@@ -135,7 +139,7 @@ export function DiaryIndex() {
                 <ButtonGroup aria-label="Basic example">
                   <Button
                     variant="outline-primary"
-                    onClick={() => navigation(`/diary/read/${item._id}`)}
+                    onClick={() => navigateAndSet("read", item._id)}
                   >
                     <FindInPageIcon />
                   </Button>
@@ -147,7 +151,7 @@ export function DiaryIndex() {
                   </Button>
                   <Button
                     variant="outline-warning"
-                    onClick={() => navigation("/diary/edit/")}
+                    onClick={() => navigateAndSet("edit", item._id)}
                   >
                     <CreateIcon />
                   </Button>
